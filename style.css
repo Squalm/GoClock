@@ -1,17 +1,24 @@
+html {
+    font-size: 100%;
+}
+
 * {
     font-family: 'Source Sans Pro', 'Courier New', Courier, monospace;
     text-align: center;
     color: #F0F0F0;
-}
-
-body {
-    background: #0F0F0F;
+    background-color: #0F0F0F;
+    font-size: 1.1em;
 }
 
 h1 {
-    font-size: 50px;
+    font-size: 5em;
     color: #c97d60;
     padding: 0px;
+    position: relative;
+    left: 0%;
+    right: 0%;
+    display: flex;
+    justify-content: space-around;
 }
 
 input, select, button {
@@ -52,5 +59,14 @@ button:active {
 
 footer {
     position: fixed;
-    
+    background-color: #111;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+}
+
+a {
+    color: #c97d60;
+    background-color: #111;
 }
