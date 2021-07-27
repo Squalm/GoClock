@@ -1,17 +1,13 @@
-html {
-    font-size: 100%;
-}
-
 * {
     font-family: 'Source Sans Pro', 'Courier New', Courier, monospace;
     text-align: center;
     color: #F0F0F0;
     background-color: #0F0F0F;
-    font-size: 1.1em;
+    font-size: 2.5vmin;
 }
 
 h1 {
-    font-size: 5em;
+    font-size: 8vmin;
     color: #c97d60;
     padding: 0px;
     position: relative;
@@ -64,9 +60,11 @@ footer {
     left: 0;
     right: 0;
     padding: 15px;
+    font-size: 2vmin;
 }
 
 a {
     color: #c97d60;
     background-color: #111;
+    font-size: 2vmin;
 }
