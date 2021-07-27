@@ -1,0 +1,56 @@
+* {
+    font-family: 'Source Sans Pro', 'Courier New', Courier, monospace;
+    text-align: center;
+    color: #F0F0F0;
+}
+
+body {
+    background: #0F0F0F;
+}
+
+h1 {
+    font-size: 50px;
+    color: #c97d60;
+    padding: 0px;
+}
+
+input, select, button {
+    border: none;
+    border-radius: 10%;
+    background: #333;
+}
+
+input {
+    color: #c97d60;
+}
+
+button:active {
+    background-color: #c97d60;
+}
+
+#button-feedback {
+    color: #c97d60;
+}
+
+#leftClock, #rightClock {
+    font-size: 40px;
+}
+
+#rightClock, #periodMarkerRight {
+    position: relative;
+    left: 100px;
+    bottom: 25px;
+    padding: 0px;
+}
+
+#leftClock, #periodMarkerLeft{
+    position: relative;
+    right: 100px;
+    top: 25px;
+    padding: 0px;
+}
+
+footer {
+    position: fixed;
+    
+}

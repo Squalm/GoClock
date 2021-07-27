@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Go Clock</title>
+
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
+
+  </head>
+
+  <body>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="script.js"></script>
+
+    <h1>A Go Clock</h1>
+
+    <!-- User settings for the timer -->
+
+    <div id="timeSettings">
+
+        <!-- Time control -->
+
+        <!--
+        <p>Choose a time control method</p>
+        <label for="byo-yomi">Byo-yomi
+            <input id="byo-yomi" name="timeControl" type="radio">
+        </label>
+        <label for="fischer">Fischer
+            <input id="fischer" name="timeControl" type="radio">
+        </label>
+        <label for="simple">Simple
+            <input id="simple" name="timeControl" type="radio">
+        </label>
+        <label for="absolute">Absolute
+            <input id="absolute" name="timeControl" type="radio">
+        </label>
+        <br><br>
+        -->
+
+        
+        <label for="timeControl">
+            Choose a time control method<br>
+            <select name="timeControl" id="timeControl">
+                <option value="simple">Simple</option>
+                <option value="fischer">Fischer</option>
+                <option value="byo-yomi" selected>Byo-Yomi</option>
+                <option value="absolute">Absolute</option>
+            </select>
+        </label>
+        <br>
+        
+
+        <!-- Time bits -->
+
+        <label for="initialTimeHours">
+            Set a starting time<br>
+            <input name="initialTimeHours" id="initialTimeHours" placeholder="HH" maxlength="2" size="2">
+        </label>
+        <label for="initialTimeMins">
+            <input name="initialTimeMins" id="initialTimeMins" placeholder="MM" maxlength="2" size="2">
+        </label>
+        <label for="initialTimeSecs">
+            <input name="initialTimeSecs" id="initialTimeSecs" placeholder="SS" maxlength="2" size="2">
+        </label>
+
+        <!-- Periods and the like -->
+
+        <br>
+        <label for="periodTime">
+            Set a period length<br>
+            <input name="periodTime" id="periodTime" placeholder="SSS" maxlength="3" size="3">
+        </label>
+        <br>
+        <label for="periodNumber">
+            Set a number of periods<br>
+            <input name="periodNumber" id="periodNumber" maxlength="2" size="2">
+        </label>
+
+        <!-- Submit -->
+
+        <br><br>
+        <button type="button" onclick="updateTimer()">Submit</button>
+        <p id="button-feedback"></p>
+
+        <button type="button" onclick="startTimer()">Begin the Game</button>
+
+
+    </div>
+
+    <!-- The time itself -->
+
+    <div id="timer">
+
+        <span id="leftClock"></span>
+        <span id="periodMarkerLeft"></span> <br>
+        <span id="rightClock"></span>
+        <span id="periodMarkerRight"></span> <br>
+
+        <button id="stopButton" type="button" onclick="stopTimer()">End</button>
+    
+    </div>
+
+    <!--<footer>Hey there! I believe in an internet free of tracking (and ads, whereever possible). To keep this site running and support my other work please consider donating on <a href="">Patreon</a> or <a href="">Ko-fi</a>.</footer>-->
+
+  </body>
+</html>
