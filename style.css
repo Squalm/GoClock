@@ -41,15 +41,15 @@ button:active {
 
 #rightClock, #periodMarkerRight {
     position: relative;
-    left: 100px;
-    bottom: 25px;
+    left: 10vw;
+    bottom: 2.6vmin;
     padding: 0px;
 }
 
 #leftClock, #periodMarkerLeft{
     position: relative;
-    right: 100px;
-    top: 25px;
+    right: 10vw;
+    top: 2.6vmin;
     padding: 0px;
 }
 
@@ -59,7 +59,7 @@ footer {
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 15px;
+    padding: 1vmin;
     font-size: 2vmin;
 }
 
