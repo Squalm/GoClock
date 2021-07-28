@@ -45,8 +45,8 @@ function updateTimer() {
     if (feedback == "Updated Clock.") {
         
         // Set the clocks to the starting time
-        document.getElementById("leftClock").innerHTML = timeFormatConvert(initialTime).toString();
-        document.getElementById("rightClock").innerHTML = timeFormatConvert(initialTime).toString();
+        document.getElementById("leftClock").innerHTML = timeFormatConvert(initialTime, removeUnnecessaryPaddingUser).toString();
+        document.getElementById("rightClock").innerHTML = timeFormatConvert(initialTime, removeUnnecessaryPaddingUser).toString();
 
         // Set the vars that will be counting down to their initial values
         timeRemainingRight = initialTime;
@@ -58,14 +58,14 @@ function updateTimer() {
         // Time control specific cool bits
         if (timeControl == "fischer") {
             document.getElementById("periodMarkerLeft").innerHTML = 
-                "+" + periodTime.toString();
+                "+" + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
             document.getElementById("periodMarkerRight").innerHTML = 
-                "+" + periodTime.toString();
+                "+" + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
         } else if (timeControl == "byo-yomi") {
             document.getElementById("periodMarkerLeft").innerHTML = 
-                periodNumber.toString() + "x " + periodTime.toString();
+                periodNumber.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
             document.getElementById("periodMarkerRight").innerHTML =
-                periodNumber.toString() + "x " + periodTime.toString();
+                periodNumber.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
         } else {
             document.getElementById("periodMarkerLeft").innerHTML = "";
             document.getElementById("periodMarkerRight").innerHTML = "";
@@ -150,19 +150,43 @@ function stopTimer() {
 stopTimer();
 
 // Convert between the time to display and the internal counter
-function timeFormatConvert(time) {
+function timeFormatConvert(time, removeUnnecessaryPadding) {
 
+    // Only works for the padded string
     if (typeof time === typeof "string") {
         return parseInt(time.slice(0,2)) * 3600 + parseInt(time.slice(3,6)) * 60 + parseInt(time.slice(6))
     }
 
     if (typeof time === typeof 20) {
-        // thoroughly jank system that converts the time in seconds to hours:minutes:seconds
-        return (
-            ((time / 3600) | 0).toString().padStart(2, "0") +":"+ 
-            (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") +":"+ 
-            (time - ((time/60) | 0) * 60).toString().padStart(2, 0)
-            )
+
+        if (!removeUnnecessaryPadding) { 
+
+            // thoroughly jank system that converts the time in seconds to hours:minutes:seconds
+            return (
+                ((time / 3600) | 0).toString().padStart(2, "0") +":"+ 
+                (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") +":"+ 
+                (time - ((time/60) | 0) * 60).toString().padStart(2, 0)
+                );
+        
+        } else { // if removeUnnecessaryPadding is true
+
+            if ((time / 3600) | 0 >  0) { // if there be hours
+                return (
+                    ((time / 3600) | 0).toString() + ":" +
+                    (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") + ":" +
+                    (time - ((time / 60) | 0) * 60).toString().padStart(2, "0")
+                );
+            } else { // if there only be minutes
+
+                return (
+                    ((time / 60) | 0).toString() + ":" +
+                    (time - ((time / 60) | 0) * 60).toString().padStart(2, "0")
+                );
+
+            }
+
+        }
+
     }
 
 }
@@ -176,6 +200,7 @@ var inByoYomiLeft = false;
 var inByoYomiRight = false;
 var periodNumberRemainingLeft = 0;
 var periodNumberRemainingRight = 0;
+var removeUnnecessaryPaddingUser = true;
 
 document.onclick = function() {
 
@@ -296,23 +321,23 @@ document.onclick = function() {
 function timeDisplay() {
 
     if (timeRemainingRight >= 0) {
-        document.getElementById("rightClock").innerHTML = timeFormatConvert(timeRemainingRight);
+        document.getElementById("rightClock").innerHTML = timeFormatConvert(timeRemainingRight, removeUnnecessaryPaddingUser);
     }
     if (timeRemainingLeft >= 0) {
-        document.getElementById("leftClock").innerHTML = timeFormatConvert(timeRemainingLeft);
+        document.getElementById("leftClock").innerHTML = timeFormatConvert(timeRemainingLeft, removeUnnecessaryPaddingUser);
     }
 
     if (timeControl == "byo-yomi") {
         if (periodNumberRemainingRight > 0) {
             document.getElementById("periodMarkerRight").innerHTML = 
-                periodNumberRemainingRight.toString() + "x " + periodTime.toString();
+                periodNumberRemainingRight.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
         }
         if (periodNumberRemainingRight == 0) {
             document.getElementById("periodMarkerRight").innerHTML = "SD"
         }
         if (periodNumberRemainingLeft > 0) {
             document.getElementById("periodMarkerLeft").innerHTML = 
-                periodNumberRemainingLeft.toString() + "x " + periodTime.toString();
+                periodNumberRemainingLeft.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
         }
         if (periodNumberRemainingLeft == 0) {
             document.getElementById("periodMarkerLeft").innerHTML = "SD"
