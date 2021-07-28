@@ -66,3 +66,7 @@ a {
     background-color: #111;
     font-size: 2vmin;
 }
+
+div {
+    /* this is empty but needs to exist so that the js can use it */
+}

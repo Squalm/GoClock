@@ -75,6 +75,33 @@ function updateTimer() {
 
 }
 
+// Show or hide the inputs based on the select list
+function showHideInputs() {
+    
+    let _timeControl = document.getElementById("timeControl").value;
+
+    if (_timeControl == "byo-yomi") {
+        // if byo-yomi, show both fields
+        let _element = document.getElementById("periodTimeContainer");
+        _element.style.display = "";
+        _element = document.getElementById("periodNumberContainer");
+        _element.style.display = "";
+    } else if (_timeControl == "fischer") {
+        // if fischer show only the period time field
+        let _element = document.getElementById("periodTimeContainer");
+        _element.style.display = "";
+        _element = document.getElementById("periodNumberContainer");
+        _element.style.display = "none";
+    } else {
+        // if anything else hide both fields
+        let _element = document.getElementById("periodTimeContainer");
+        _element.style.display = "none";
+        _element = document.getElementById("periodNumberContainer");
+        _element.style.display = "none";
+    }
+
+}
+
 // Start the timer!
 function startTimer() {
     
