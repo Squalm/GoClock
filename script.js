@@ -81,17 +81,37 @@ function showHideInputs() {
     let _timeControl = document.getElementById("timeControl").value;
 
     if (_timeControl == "byo-yomi") {
+
         // if byo-yomi, show both fields
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "";
         _element = document.getElementById("periodNumberContainer");
         _element.style.display = "";
+
+        document.getElementById("periodTimeLabel").innerHTML = "Set a period length<br>" + document.getElementById("periodTime").outerHTML;
+        document.getElementById("periodNumberLabel").innerHTML = "Set a period number<br>" + document.getElementById("periodNumber").outerHTML;
+
     } else if (_timeControl == "fischer") {
+        
         // if fischer show only the period time field
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "";
         _element = document.getElementById("periodNumberContainer");
         _element.style.display = "none";
+
+        document.getElementById("periodTimeLabel").innerHTML = "Set a bonus time<br>" + document.getElementById("periodTime").outerHTML;
+
+    } else if (_timeControl == "canadian") {
+        
+        // if canadian show both fields
+        let _element = document.getElementById("periodTimeContainer");
+        _element.style.display = "";
+        _element = document.getElementById("periodNumberContainer");
+        _element.style.display = "";
+
+        document.getElementById("periodTimeLabel").innerHTML = "Set a period length<br>" + document.getElementById("periodTime").outerHTML;
+        document.getElementById("periodNumberLabel").innerHTML = "Set a number of moves per period<br>" + document.getElementById("periodNumber").outerHTML;
+
     } else {
         // if anything else hide both fields
         let _element = document.getElementById("periodTimeContainer");
@@ -105,7 +125,7 @@ function showHideInputs() {
 // Start the timer!
 function startTimer() {
     
-    if (feedback !== "") {
+    if (feedback == "Updated Clock.") {
         // Hide the settings
         let element = document.getElementById("timeSettings");
         element.style.display = "none";
@@ -114,6 +134,10 @@ function startTimer() {
         element.style.display = "";
 
         gameActive = true;
+
+        if (timeControl == "fischer") {
+            timeRemainingLeft -= periodTime;
+        }
 
         // Rest of timer stuff currently handled in document.onclick
     }
@@ -201,6 +225,8 @@ var inByoYomiRight = false;
 var periodNumberRemainingLeft = 0;
 var periodNumberRemainingRight = 0;
 var removeUnnecessaryPaddingUser = true;
+var moveCounterLeft = -1;
+var moveCounterRight = 0;
 
 document.onclick = function() {
 
@@ -208,6 +234,8 @@ document.onclick = function() {
     //console.log(timeControl);
 
     if (activeTimer == "leftClock" && gameActive) {
+
+        moveCounterLeft += 1;
 
         activeTimer = "rightClock";
 
@@ -261,6 +289,8 @@ document.onclick = function() {
         }, 1000);
 
     } else if (activeTimer == "rightClock" && gameActive) {
+
+        moveCounterRight += 1;
 
         activeTimer = "leftClock";
 

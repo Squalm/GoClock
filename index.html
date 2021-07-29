@@ -56,9 +56,10 @@
         <label for="timeControl">
             Choose a time control method<br>
             <select name="timeControl" id="timeControl" onchange="showHideInputs()">
-                <option value="simple">Simple</option>
-                <option value="fischer">Fischer</option>
                 <option value="byo-yomi" selected>Byo-Yomi</option>
+                <option value="fischer">Fischer</option>
+                <option value="canadian">Canadian</option>
+                <option value="simple">Simple</option>
                 <option value="absolute">Absolute</option>
             </select>
         </label>
@@ -82,7 +83,7 @@
 
         <div id="periodTimeContainer">
             <br>
-            <label for="periodTime">
+            <label for="periodTime" id="periodTimeLabel">
                 Set a period length<br>
                 <input name="periodTime" id="periodTime" placeholder="SSS" maxlength="3" size="2">
             </label>
@@ -90,7 +91,7 @@
 
         <div id="periodNumberContainer">
             <br>
-            <label for="periodNumber">
+            <label for="periodNumber" id="periodNumberLabel">
                 Set a number of periods<br>
                 <input name="periodNumber" id="periodNumber" maxlength="2" size="2">
             </label>
