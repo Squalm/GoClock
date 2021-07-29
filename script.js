@@ -66,6 +66,11 @@ function updateTimer() {
                 periodNumber.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
             document.getElementById("periodMarkerRight").innerHTML =
                 periodNumber.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
+        } else if (timeControl == "canadian") {
+            document.getElementById("periodMarkerLeft").innerHTML =
+                timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString();
+            document.getElementById("periodMarkerRight").innerHTML =
+                timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString();
         } else {
             document.getElementById("periodMarkerLeft").innerHTML = "";
             document.getElementById("periodMarkerRight").innerHTML = "";
@@ -162,8 +167,8 @@ function stopTimer() {
 
         gameActive = false;
 
-        inByoYomiLeft = false;
-        inByoYomiRight = false;
+        inPeriodLeft = false;
+        inPeriodRight = false;
 
     }
     );
@@ -220,8 +225,8 @@ var activeTimer = "leftClock";
 var gameActive = false;
 var timeRemainingLeft = 0;
 var timeRemainingRight = 0;
-var inByoYomiLeft = false;
-var inByoYomiRight = false;
+var inPeriodLeft = false;
+var inPeriodRight = false;
 var periodNumberRemainingLeft = 0;
 var periodNumberRemainingRight = 0;
 var removeUnnecessaryPaddingUser = true;
@@ -247,11 +252,20 @@ document.onclick = function() {
             timeRemainingLeft = initialTime;
             timeRemainingRight = initialTime;
         }
-        if (inByoYomiRight && periodNumberRemainingRight >= 0) {
-            timeRemainingRight = periodTime;
+        if (timeControl == "canadian") {
+            if (moveCounterLeft >= periodNumber) { // when using canadian time periodNumber is the number of moves to get more time
+                moveCounterLeft = 0;
+                timeRemainingLeft = periodTime;
+            }
         }
-        if (inByoYomiLeft && periodNumberRemainingLeft >= 0) {
-            timeRemainingLeft = periodTime;
+
+        if (timeControl == "byo-yomi") {
+            if (inPeriodRight && periodNumberRemainingRight >= 0) {
+                timeRemainingRight = periodTime;
+            }
+            if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
+                timeRemainingLeft = periodTime;
+            }
         }
 
         // Countdown
@@ -266,27 +280,38 @@ document.onclick = function() {
                 if (timeRemainingRight <= 0) {
 
                     // Remove periods once used
-                    if (inByoYomiRight) {
+                    if (inPeriodRight) {
                         periodNumberRemainingRight -= 1;
                     }
 
-                    inByoYomiRight = true;
+                    inPeriodRight = true;
 
                     // Reset time each move '>= 0' for SD. 
-                    if (inByoYomiRight && periodNumberRemainingRight >= 0) {
+                    if (inPeriodRight && periodNumberRemainingRight >= 0) {
                         timeRemainingRight = periodTime;
                     }
-                    if (inByoYomiLeft && periodNumberRemainingLeft >= 0) {
+                    if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                         timeRemainingLeft = periodTime;
                     }
 
                 }
+            
+            }
 
+            // Canadian rules
+            if (timeControl == "canadian") {
+
+                if (timeRemainingRight <= 0 && inPeriodRight == false) {
+                    inPeriodRight = true;
+                    timeRemainingRight = periodTime;
+                    moveCounterRight = 0;
+                }
             }
 
             timeDisplay();
+            formatTimer();
 
-        }, 1000);
+        }, 100);
 
     } else if (activeTimer == "rightClock" && gameActive) {
 
@@ -302,11 +327,21 @@ document.onclick = function() {
             timeRemainingLeft = initialTime;
             timeRemainingRight = initialTime;
         }
-        if (inByoYomiRight && periodNumberRemainingRight > 0) {
-            timeRemainingRight = periodTime;
+        if (timeControl == "canadian") {
+            if (moveCounterRight >= periodNumber) { // when using canadian time periodNumber is the number of moves to get more time
+                moveCounterRight = 0;
+                timeRemainingRight = periodTime;
+            }
         }
-        if (inByoYomiLeft && periodNumberRemainingLeft > 0) {
-            timeRemainingLeft = periodTime;
+
+
+        if (timeControl == "byo-yomi") {
+            if (inPeriodRight && periodNumberRemainingRight > 0) {
+                timeRemainingRight = periodTime;
+            }
+            if (inPeriodLeft && periodNumberRemainingLeft > 0) {
+                timeRemainingLeft = periodTime;
+            }
         }
 
         // Countdown
@@ -321,27 +356,37 @@ document.onclick = function() {
                 if (timeRemainingLeft <= 0) {
 
                     // Remove periods once used
-                    if (inByoYomiLeft) {
+                    if (inPeriodLeft) {
                         periodNumberRemainingLeft -= 1;
                     }
 
-                    inByoYomiLeft = true;
+                    inPeriodLeft = true;
 
                     // Reset time each move '>= 0' for SD. 
-                    if (inByoYomiRight && periodNumberRemainingRight >= 0) {
+                    if (inPeriodRight && periodNumberRemainingRight >= 0) {
                         timeRemainingRight = periodTime;
                     }
-                    if (inByoYomiLeft && periodNumberRemainingLeft >= 0) {
+                    if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                         timeRemainingLeft = periodTime;
                     }
                 }
 
             }
 
+            // Canadian rules
+            if (timeControl == "canadian") {
+
+                if (timeRemainingLeft <= 0 && inPeriodLeft == false) {
+                    inPeriodLeft = true;
+                    timeRemainingLeft = periodTime;
+                    moveCounterLeft = 0;
+                }
+            }
+
             timeDisplay();
             formatTimer();
 
-        }, 1000);
+        }, 100);
 
     } 
 
@@ -372,6 +417,11 @@ function timeDisplay() {
         if (periodNumberRemainingLeft == 0) {
             document.getElementById("periodMarkerLeft").innerHTML = "SD"
         }
+    } else if (timeControl == "canadian") {
+        document.getElementById("periodMarkerRight").innerHTML =
+            timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString() + (inPeriodRight ? " (" + (periodNumber - moveCounterRight).toString() + ")" : "");
+        document.getElementById("periodMarkerLeft").innerHTML =
+            timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString() + (inPeriodLeft ? " (" + (periodNumber - moveCounterLeft).toString() + ")" : "");
     }
 
 }
