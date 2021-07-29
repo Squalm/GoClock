@@ -29,6 +29,7 @@ input {
 
 button:active {
     background-color: #c97d60;
+    border: none;
 }
 
 #button-feedback {
@@ -53,7 +54,7 @@ button:active {
 
 footer {
     position: fixed;
-    background-color: #111;
+    background-color: #202020;
     bottom: 0;
     left: 0;
     right: 0;
@@ -63,10 +64,24 @@ footer {
 
 a {
     color: #c97d60;
-    background-color: #111;
+    background-color: #202020;
     font-size: 2vmin;
 }
 
 div {
     /* this is empty but needs to exist so that the js can use it */
+}
+
+#settingsContent, #settingsButton {
+    background-color: #202020;
+    display: flex;
+    justify-content: left;
+}
+
+#settingsContent {
+    display: none;
+}
+
+#settingsButton:active {
+    background-color: #333;
 }

@@ -66,6 +66,11 @@ function updateTimer() {
                 periodNumber.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
             document.getElementById("periodMarkerRight").innerHTML =
                 periodNumber.toString() + "x " + timeFormatConvert(periodTime, removeUnnecessaryPaddingUser);
+        } else if (timeControl == "canadian") {
+            document.getElementById("periodMarkerLeft").innerHTML =
+                timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString();
+            document.getElementById("periodMarkerRight").innerHTML =
+                timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString();
         } else {
             document.getElementById("periodMarkerLeft").innerHTML = "";
             document.getElementById("periodMarkerRight").innerHTML = "";
@@ -81,17 +86,37 @@ function showHideInputs() {
     let _timeControl = document.getElementById("timeControl").value;
 
     if (_timeControl == "byo-yomi") {
+
         // if byo-yomi, show both fields
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "";
         _element = document.getElementById("periodNumberContainer");
         _element.style.display = "";
+
+        document.getElementById("periodTimeLabel").innerHTML = "Set a period length<br>" + document.getElementById("periodTime").outerHTML;
+        document.getElementById("periodNumberLabel").innerHTML = "Set a period number<br>" + document.getElementById("periodNumber").outerHTML;
+
     } else if (_timeControl == "fischer") {
+        
         // if fischer show only the period time field
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "";
         _element = document.getElementById("periodNumberContainer");
         _element.style.display = "none";
+
+        document.getElementById("periodTimeLabel").innerHTML = "Set a bonus time<br>" + document.getElementById("periodTime").outerHTML;
+
+    } else if (_timeControl == "canadian") {
+        
+        // if canadian show both fields
+        let _element = document.getElementById("periodTimeContainer");
+        _element.style.display = "";
+        _element = document.getElementById("periodNumberContainer");
+        _element.style.display = "";
+
+        document.getElementById("periodTimeLabel").innerHTML = "Set a period length<br>" + document.getElementById("periodTime").outerHTML;
+        document.getElementById("periodNumberLabel").innerHTML = "Set a number of moves per period<br>" + document.getElementById("periodNumber").outerHTML;
+
     } else {
         // if anything else hide both fields
         let _element = document.getElementById("periodTimeContainer");
@@ -105,7 +130,7 @@ function showHideInputs() {
 // Start the timer!
 function startTimer() {
     
-    if (feedback !== "") {
+    if (feedback == "Updated Clock.") {
         // Hide the settings
         let element = document.getElementById("timeSettings");
         element.style.display = "none";
@@ -114,6 +139,10 @@ function startTimer() {
         element.style.display = "";
 
         gameActive = true;
+
+        if (timeControl == "fischer") { // this fixes the bug where in fischer time gets extra bonus time as the game starts
+            timeRemainingLeft -= periodTime;
+        }
 
         // Rest of timer stuff currently handled in document.onclick
     }
@@ -138,8 +167,8 @@ function stopTimer() {
 
         gameActive = false;
 
-        inByoYomiLeft = false;
-        inByoYomiRight = false;
+        inPeriodLeft = false;
+        inPeriodRight = false;
 
     }
     );
@@ -196,11 +225,13 @@ var activeTimer = "leftClock";
 var gameActive = false;
 var timeRemainingLeft = 0;
 var timeRemainingRight = 0;
-var inByoYomiLeft = false;
-var inByoYomiRight = false;
+var inPeriodLeft = false;
+var inPeriodRight = false;
 var periodNumberRemainingLeft = 0;
 var periodNumberRemainingRight = 0;
 var removeUnnecessaryPaddingUser = true;
+var moveCounterLeft = -1;
+var moveCounterRight = 0;
 
 document.onclick = function() {
 
@@ -208,6 +239,8 @@ document.onclick = function() {
     //console.log(timeControl);
 
     if (activeTimer == "leftClock" && gameActive) {
+
+        moveCounterLeft += 1;
 
         activeTimer = "rightClock";
 
@@ -219,11 +252,20 @@ document.onclick = function() {
             timeRemainingLeft = initialTime;
             timeRemainingRight = initialTime;
         }
-        if (inByoYomiRight && periodNumberRemainingRight >= 0) {
-            timeRemainingRight = periodTime;
+        if (timeControl == "canadian") {
+            if (moveCounterLeft >= periodNumber) { // when using canadian time periodNumber is the number of moves to get more time
+                moveCounterLeft = 0;
+                timeRemainingLeft = periodTime;
+            }
         }
-        if (inByoYomiLeft && periodNumberRemainingLeft >= 0) {
-            timeRemainingLeft = periodTime;
+
+        if (timeControl == "byo-yomi") {
+            if (inPeriodRight && periodNumberRemainingRight >= 0) {
+                timeRemainingRight = periodTime;
+            }
+            if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
+                timeRemainingLeft = periodTime;
+            }
         }
 
         // Countdown
@@ -238,29 +280,42 @@ document.onclick = function() {
                 if (timeRemainingRight <= 0) {
 
                     // Remove periods once used
-                    if (inByoYomiRight) {
+                    if (inPeriodRight) {
                         periodNumberRemainingRight -= 1;
                     }
 
-                    inByoYomiRight = true;
+                    inPeriodRight = true;
 
                     // Reset time each move '>= 0' for SD. 
-                    if (inByoYomiRight && periodNumberRemainingRight >= 0) {
+                    if (inPeriodRight && periodNumberRemainingRight >= 0) {
                         timeRemainingRight = periodTime;
                     }
-                    if (inByoYomiLeft && periodNumberRemainingLeft >= 0) {
+                    if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                         timeRemainingLeft = periodTime;
                     }
 
                 }
+            
+            }
 
+            // Canadian rules
+            if (timeControl == "canadian") {
+
+                if (timeRemainingRight <= 0 && inPeriodRight == false) {
+                    inPeriodRight = true;
+                    timeRemainingRight = periodTime;
+                    moveCounterRight = 0;
+                }
             }
 
             timeDisplay();
+            formatTimer();
 
         }, 1000);
 
     } else if (activeTimer == "rightClock" && gameActive) {
+
+        moveCounterRight += 1;
 
         activeTimer = "leftClock";
 
@@ -272,11 +327,21 @@ document.onclick = function() {
             timeRemainingLeft = initialTime;
             timeRemainingRight = initialTime;
         }
-        if (inByoYomiRight && periodNumberRemainingRight > 0) {
-            timeRemainingRight = periodTime;
+        if (timeControl == "canadian") {
+            if (moveCounterRight >= periodNumber) { // when using canadian time periodNumber is the number of moves to get more time
+                moveCounterRight = 0;
+                timeRemainingRight = periodTime;
+            }
         }
-        if (inByoYomiLeft && periodNumberRemainingLeft > 0) {
-            timeRemainingLeft = periodTime;
+
+
+        if (timeControl == "byo-yomi") {
+            if (inPeriodRight && periodNumberRemainingRight > 0) {
+                timeRemainingRight = periodTime;
+            }
+            if (inPeriodLeft && periodNumberRemainingLeft > 0) {
+                timeRemainingLeft = periodTime;
+            }
         }
 
         // Countdown
@@ -291,21 +356,31 @@ document.onclick = function() {
                 if (timeRemainingLeft <= 0) {
 
                     // Remove periods once used
-                    if (inByoYomiLeft) {
+                    if (inPeriodLeft) {
                         periodNumberRemainingLeft -= 1;
                     }
 
-                    inByoYomiLeft = true;
+                    inPeriodLeft = true;
 
                     // Reset time each move '>= 0' for SD. 
-                    if (inByoYomiRight && periodNumberRemainingRight >= 0) {
+                    if (inPeriodRight && periodNumberRemainingRight >= 0) {
                         timeRemainingRight = periodTime;
                     }
-                    if (inByoYomiLeft && periodNumberRemainingLeft >= 0) {
+                    if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                         timeRemainingLeft = periodTime;
                     }
                 }
 
+            }
+
+            // Canadian rules
+            if (timeControl == "canadian") {
+
+                if (timeRemainingLeft <= 0 && inPeriodLeft == false) {
+                    inPeriodLeft = true;
+                    timeRemainingLeft = periodTime;
+                    moveCounterLeft = 0;
+                }
             }
 
             timeDisplay();
@@ -342,6 +417,11 @@ function timeDisplay() {
         if (periodNumberRemainingLeft == 0) {
             document.getElementById("periodMarkerLeft").innerHTML = "SD"
         }
+    } else if (timeControl == "canadian") {
+        document.getElementById("periodMarkerRight").innerHTML =
+            timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString() + (inPeriodRight ? " (" + (periodNumber - moveCounterRight).toString() + ")" : "");
+        document.getElementById("periodMarkerLeft").innerHTML =
+            timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString() + (inPeriodLeft ? " (" + (periodNumber - moveCounterLeft).toString() + ")" : "");
     }
 
 }
@@ -351,3 +431,19 @@ function formatTimer() {
 
 }
 
+// Show and hide the settings menu on button pressed.
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("onClick", function() {
+
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+
+    });
+}
