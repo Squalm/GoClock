@@ -140,7 +140,7 @@ function startTimer() {
 
         gameActive = true;
 
-        if (timeControl == "fischer") {
+        if (timeControl == "fischer") { // this fixes the bug where in fischer time gets extra bonus time as the game starts
             timeRemainingLeft -= periodTime;
         }
 
@@ -311,7 +311,7 @@ document.onclick = function() {
             timeDisplay();
             formatTimer();
 
-        }, 100);
+        }, 1000);
 
     } else if (activeTimer == "rightClock" && gameActive) {
 
@@ -386,7 +386,7 @@ document.onclick = function() {
             timeDisplay();
             formatTimer();
 
-        }, 100);
+        }, 1000);
 
     } 
 
