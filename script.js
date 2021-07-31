@@ -15,9 +15,9 @@ function updateTimer() {
 
     // Get the initial time
     initialTime = 
-        parseInt(document.getElementById("initialTimeHours").value) * 3600 + 
-        parseInt(document.getElementById("initialTimeMins").value) * 60 + 
-        parseInt(document.getElementById("initialTimeSecs").value);
+        (document.getElementById("initialTimeHours").value == "" ? 0 : parseInt(document.getElementById("initialTimeHours").value)) * 3600 + 
+        (document.getElementById("initialTimeMins").value == "" ? 0 : parseInt(document.getElementById("initialTimeMins").value)) * 60 + 
+        (document.getElementById("initialTimeSecs").value == "" ? 0 : parseInt(document.getElementById("initialTimeSecs").value));
     //console.log(initialTime);
 
     if (isNaN(initialTime)) {
@@ -25,13 +25,13 @@ function updateTimer() {
     }
 
     // Get period bits
-    periodTime = parseInt(document.getElementById("periodTime").value);
+    periodTime = (document.getElementById("periodTime").value == "" ? 0 : parseInt(document.getElementById("periodTime").value));
 
     if (isNaN(periodTime) && (timeControl == "byo-yomi" || timeControl == "fischer")) {
         feedback = "Please input a valid period length."
     }
 
-    periodNumber = parseInt(document.getElementById("periodNumber").value);
+    periodNumber = (document.getElementById("periodNumber").value == "" ? 0 : parseInt(document.getElementById("periodNumber").value));
 
     if (isNaN(periodNumber) && (timeControl == "byo-yomi")) {
         feedback = "Please input a valid period length"
