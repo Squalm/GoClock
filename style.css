@@ -62,6 +62,18 @@ footer {
     font-size: 2vmin;
 }
 
+header {
+    position: absolute;
+    background-color: #202020;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1vmin;
+    font-size: 2vmin;
+    display: flex;
+    justify-content: space-evenly;
+}
+
 a {
     color: #c97d60;
     background-color: #202020;
