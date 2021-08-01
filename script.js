@@ -451,6 +451,7 @@ function timeDisplay() {
 
 }
 
+/*
 // Show and hide the settings menu on button pressed.
 var coll = document.getElementsByClassName("collapsible");
 var i;
@@ -467,3 +468,4 @@ for (i = 0; i < coll.length; i++) {
 
     });
 }
+*/
