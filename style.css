@@ -76,8 +76,8 @@ header {
 
 a {
     color: #c97d60;
-    background-color: #202020;
-    font-size: 2vmin;
+    background-color: inherit;
+    font-size: inherit;
 }
 
 div {
