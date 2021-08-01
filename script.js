@@ -4,6 +4,7 @@ var timeControl = "";
 var periodTime = 0;
 var periodNumber = 0;
 var feedback = "";
+let timer = null;
 
 function updateTimer() {
 
@@ -78,10 +79,12 @@ function updateTimer() {
 
 }
 
+document.querySelector("#updateTimerButton").addEventListener("click", updateTimer);
+
 // Show or hide the inputs based on the select list
-function showHideInputs() {
+function showHideInputs(evt) {
     
-    let _timeControl = document.getElementById("timeControl").value;
+    let _timeControl = evt.target.value
 
     if (_timeControl == "byo-yomi") {
 
@@ -125,6 +128,8 @@ function showHideInputs() {
 
 }
 
+document.querySelector("#timeControl").addEventListener("change", showHideInputs);
+
 // Start the timer!
 function startTimer() {
     
@@ -146,6 +151,8 @@ function startTimer() {
     }
 
 }
+
+document.querySelector("#startButton").addEventListener("click", startTimer);
 
 // Stop the timer!
 function stopTimer() {
@@ -173,6 +180,7 @@ function stopTimer() {
 
 }
 
+document.querySelector("#stopButton").addEventListener("click", stopTimer);
 // Initially hide the "end game" button.
 stopTimer();
 

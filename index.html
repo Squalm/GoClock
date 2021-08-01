@@ -8,12 +8,9 @@
 
     <link href="style.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
-
   </head>
 
   <body>
-    <script src="script.js"></script>
-
     <!-- Settings menu -->
 
     <!--<button type="button" class="collapsible" id="settingsButton">Settings</button>
@@ -57,7 +54,7 @@
         
         <label for="timeControl">
             Choose a time control method<br>
-            <select name="timeControl" id="timeControl" onchange="showHideInputs()">
+            <select name="timeControl" id="timeControl">
                 <option value="byo-yomi" selected>Byo-Yomi</option>
                 <option value="fischer">Fischer</option>
                 <option value="canadian">Canadian</option>
@@ -102,10 +99,10 @@
         <!-- Submit -->
 
         <br><br>
-        <button type="button" onclick="updateTimer()">Submit</button>
+        <button type="button" id="updateTimerButton">Submit</button>
         <p id="button-feedback"></p>
 
-        <button type="button" onclick="startTimer()">Begin the Game</button>
+        <button id="startButton" type="button">Begin the Game</button>
 
         <br><br>
 
@@ -121,7 +118,7 @@
         <span id="rightClock"></span>
         <span id="periodMarkerRight"></span> <br><br>
 
-        <button id="stopButton" type="button" onclick="stopTimer()">End</button>
+        <button id="stopButton" type="button">End</button>
     
     </div>
 
@@ -134,5 +131,6 @@
 
     </div>
 
+    <script src="script.js"></script>
   </body>
 </html>
