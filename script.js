@@ -232,11 +232,17 @@ var periodNumberRemainingRight = 0;
 var removeUnnecessaryPaddingUser = true;
 var moveCounterLeft = -1;
 var moveCounterRight = 0;
+var justSwapped = false;
 
-document.onclick = function() {
+// On click swap the timer
+document.onclick = function() {allTimeControl();};
 
+// All time control buisness
+function allTimeControl() {
     window.clearInterval(timer);
     //console.log(timeControl);
+
+    justSwapped = true;
 
     if (activeTimer == "leftClock" && gameActive) {
 
@@ -267,6 +273,9 @@ document.onclick = function() {
                 timeRemainingLeft = periodTime;
             }
         }
+
+        // Format on swap
+        document.getElementById("leftClock").style.color = "#c97d60";
 
         // Countdown
         timer = window.setInterval(
@@ -309,7 +318,14 @@ document.onclick = function() {
             }
 
             timeDisplay();
-            formatTimer();
+
+            // Format the timer
+            if (justSwapped == true) {
+                document.getElementById("leftClock").style.color = "#F0F0F0"
+                document.getElementById("rightClock").style.color = "#F0F0F0"
+            }
+
+            justSwapped = false;
 
         }, 1000);
 
@@ -343,6 +359,9 @@ document.onclick = function() {
                 timeRemainingLeft = periodTime;
             }
         }
+
+        // Format on swap
+        document.getElementById("rightClock").style.color = "#c97d60";
 
         // Countdown
         timer = window.setInterval(
@@ -384,12 +403,18 @@ document.onclick = function() {
             }
 
             timeDisplay();
-            formatTimer();
+
+            // Format the timer
+            if (justSwapped == true) {
+                document.getElementById("leftClock").style.color = "#F0F0F0"
+                document.getElementById("rightClock").style.color = "#F0F0F0"
+            }
+
+            justSwapped = false;
 
         }, 1000);
 
     } 
-
 }
 
 // Put the times on the screen
@@ -423,11 +448,6 @@ function timeDisplay() {
         document.getElementById("periodMarkerLeft").innerHTML =
             timeFormatConvert(periodTime, removeUnnecessaryPaddingUser) + " / " + periodNumber.toString() + (inPeriodLeft ? " (" + (periodNumber - moveCounterLeft).toString() + ")" : "");
     }
-
-}
-
-// Format the specified timer, e.g. when low on time make it go red.
-function formatTimer() {
 
 }
 
