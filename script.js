@@ -4,6 +4,7 @@ var timeControl = "";
 var periodTime = 0;
 var periodNumber = 0;
 var feedback = "";
+let timer = null;
 
 function updateTimer() {
 
@@ -18,7 +19,6 @@ function updateTimer() {
         (document.getElementById("initialTimeHours").value == "" ? 0 : parseInt(document.getElementById("initialTimeHours").value)) * 3600 + 
         (document.getElementById("initialTimeMins").value == "" ? 0 : parseInt(document.getElementById("initialTimeMins").value)) * 60 + 
         (document.getElementById("initialTimeSecs").value == "" ? 0 : parseInt(document.getElementById("initialTimeSecs").value));
-    //console.log(initialTime);
 
     if (isNaN(initialTime)) {
         feedback = "Please input a valid starting time.";
@@ -39,7 +39,6 @@ function updateTimer() {
 
     // Give feedback to the user
     document.getElementById("button-feedback").innerHTML = feedback;
-    //alert(feedback);
 
     // Update the settings
     if (feedback == "Updated Clock.") {
@@ -80,14 +79,16 @@ function updateTimer() {
 
 }
 
+document.querySelector("#updateTimerButton").addEventListener("click", updateTimer);
+
 // Show or hide the inputs based on the select list
-function showHideInputs() {
+function showHideInputs(evt) {
     
-    let _timeControl = document.getElementById("timeControl").value;
+    let _timeControl = evt.target.value
 
     if (_timeControl == "byo-yomi") {
 
-        // if byo-yomi, show both fields
+        // If byo-yomi, show both fields
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "";
         _element = document.getElementById("periodNumberContainer");
@@ -98,7 +99,7 @@ function showHideInputs() {
 
     } else if (_timeControl == "fischer") {
         
-        // if fischer show only the period time field
+        // If fischer show only the period time field
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "";
         _element = document.getElementById("periodNumberContainer");
@@ -108,7 +109,7 @@ function showHideInputs() {
 
     } else if (_timeControl == "canadian") {
         
-        // if canadian show both fields
+        // If canadian show both fields
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "";
         _element = document.getElementById("periodNumberContainer");
@@ -118,7 +119,7 @@ function showHideInputs() {
         document.getElementById("periodNumberLabel").innerHTML = "Set a number of moves per period<br>" + document.getElementById("periodNumber").outerHTML;
 
     } else {
-        // if anything else hide both fields
+        // If anything else hide both fields
         let _element = document.getElementById("periodTimeContainer");
         _element.style.display = "none";
         _element = document.getElementById("periodNumberContainer");
@@ -126,6 +127,8 @@ function showHideInputs() {
     }
 
 }
+
+document.querySelector("#timeControl").addEventListener("change", showHideInputs);
 
 // Start the timer!
 function startTimer() {
@@ -140,7 +143,7 @@ function startTimer() {
 
         gameActive = true;
 
-        if (timeControl == "fischer") { // this fixes the bug where in fischer time gets extra bonus time as the game starts
+        if (timeControl == "fischer") { // This fixes the bug where in fischer time gets extra bonus time as the game starts
             timeRemainingLeft -= periodTime;
         }
 
@@ -148,6 +151,8 @@ function startTimer() {
     }
 
 }
+
+document.querySelector("#startButton").addEventListener("click", startTimer);
 
 // Stop the timer!
 function stopTimer() {
@@ -175,6 +180,7 @@ function stopTimer() {
 
 }
 
+document.querySelector("#stopButton").addEventListener("click", stopTimer);
 // Initially hide the "end game" button.
 stopTimer();
 
@@ -190,22 +196,22 @@ function timeFormatConvert(time, removeUnnecessaryPadding) {
 
         if (!removeUnnecessaryPadding) { 
 
-            // thoroughly jank system that converts the time in seconds to hours:minutes:seconds
+            // Thoroughly jank system that converts the time in seconds to hours:minutes:seconds
             return (
                 ((time / 3600) | 0).toString().padStart(2, "0") +":"+ 
                 (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") +":"+ 
                 (time - ((time/60) | 0) * 60).toString().padStart(2, 0)
                 );
         
-        } else { // if removeUnnecessaryPadding is true
+        } else { // If removeUnnecessaryPadding is true
 
-            if ((time / 3600) | 0 >  0) { // if there be hours
+            if ((time / 3600) | 0 >  0) { // If there be hours
                 return (
                     ((time / 3600) | 0).toString() + ":" +
                     (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") + ":" +
                     (time - ((time / 60) | 0) * 60).toString().padStart(2, "0")
                 );
-            } else { // if there only be minutes
+            } else { // If there only be minutes
 
                 return (
                     ((time / 60) | 0).toString() + ":" +
@@ -220,7 +226,7 @@ function timeFormatConvert(time, removeUnnecessaryPadding) {
 
 }
 
-// Click detection to swap the clock.
+// Click detection to swap the clock
 var activeTimer = "leftClock";
 var gameActive = false;
 var timeRemainingLeft = 0;
@@ -240,7 +246,6 @@ document.onclick = function() {allTimeControl();};
 // All time control buisness
 function allTimeControl() {
     window.clearInterval(timer);
-    //console.log(timeControl);
 
     justSwapped = true;
 
@@ -259,7 +264,7 @@ function allTimeControl() {
             timeRemainingRight = initialTime;
         }
         if (timeControl == "canadian") {
-            if (moveCounterLeft >= periodNumber) { // when using canadian time periodNumber is the number of moves to get more time
+            if (moveCounterLeft >= periodNumber) { // When using canadian time, periodNumber is the number of moves to get more time
                 moveCounterLeft = 0;
                 timeRemainingLeft = periodTime;
             }
@@ -344,7 +349,7 @@ function allTimeControl() {
             timeRemainingRight = initialTime;
         }
         if (timeControl == "canadian") {
-            if (moveCounterRight >= periodNumber) { // when using canadian time periodNumber is the number of moves to get more time
+            if (moveCounterRight >= periodNumber) { // When using canadian time, periodNumber is the number of moves to get more time
                 moveCounterRight = 0;
                 timeRemainingRight = periodTime;
             }
