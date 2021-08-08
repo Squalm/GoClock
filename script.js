@@ -19,7 +19,7 @@ function updateTimer() {
         (document.getElementById("initialTimeHours").value == "" ? 0 : parseInt(document.getElementById("initialTimeHours").value)) * 3600 + 
         (document.getElementById("initialTimeMins").value == "" ? 0 : parseInt(document.getElementById("initialTimeMins").value)) * 60 + 
         (document.getElementById("initialTimeSecs").value == "" ? 0 : parseInt(document.getElementById("initialTimeSecs").value));
-    initialTime *= 10; // This puts the number in 10ths of a seconds.
+    initialTime *= 10; // This puts the number in 10ths of a second
 
     if (isNaN(initialTime)) {
         feedback = "Please input a valid starting time.";
@@ -27,6 +27,7 @@ function updateTimer() {
 
     // Get period bits
     periodTime = (document.getElementById("periodTime").value == "" ? 0 : parseInt(document.getElementById("periodTime").value));
+    periodTime *= 10; // This puts the numebr in 10th of a second
 
     if (isNaN(periodTime) && (timeControl == "byo-yomi" || timeControl == "fischer")) {
         feedback = "Please input a valid period length."
@@ -195,18 +196,19 @@ function timeFormatConvert(time, removeUnnecessaryPadding) {
 
     if (typeof time === typeof 20) {
 
+        let _time = (time / 10) | 0;
+
         if (!removeUnnecessaryPadding) { 
 
             // Thoroughly jank system that converts the time in seconds to hours:minutes:seconds
             return (
-                ((time / 3600) | 0).toString().padStart(2, "0") +":"+ 
-                (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") +":"+ 
-                (time - ((time/60) | 0) * 60).toString().padStart(2, 0)
+                ((_time / 3600) | 0).toString().padStart(2, "0") +":"+ 
+                (((_time - ((_time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") +":"+ 
+                (_time - ((_time/60) | 0) * 60).toString().padStart(2, 0) + "." +
+                (time - (_time * 10))
                 );
         
         } else { // If removeUnnecessaryPadding is true
-
-            let _time = time / 10;
 
             if ((time / 36000) | 0 >  0) { // If there be hours
 
@@ -214,7 +216,6 @@ function timeFormatConvert(time, removeUnnecessaryPadding) {
                 const _timeMins = ((((_time - ((_time / 3600) | 0) * 3600) / 60) | 0) | 0).toString().padStart(2, "0");
                 const _timeSecs = ((_time - ((_time / 60) | 0) * 60) | 0).toString().padStart(2, "0");
                 const _timeTenths = (time - ((time/10) | 0) * 10).toString();
-                console.log([_timeHours, _timeMins, _timeSecs, _timeTenths]);
 
                 return (_timeHours + ":" + _timeMins + ":" + _timeSecs + "." + _timeTenths);
 
@@ -222,9 +223,7 @@ function timeFormatConvert(time, removeUnnecessaryPadding) {
 
                 const _timeMins = ((_time / 60) | 0).toString();
                 const _timeSecs = ((_time - ((_time / 60) | 0) * 60) | 0).toString().padStart(2, "0");
-                const _timeTenths = (time - ((time/10) | 0) * 10).toString();
-                console.log([_timeMins, _timeSecs, _timeTenths]);
-
+                const _timeTenths = (time - (_time * 10)).toString();
 
                 return (_timeMins + ":" + _timeSecs + "." + _timeTenths);
 
