@@ -1,3 +1,4 @@
+# Thanks so much to Raylu for setting this up.
 env:
   browser: true
   es6: true

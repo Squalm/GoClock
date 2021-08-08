@@ -19,6 +19,7 @@ function updateTimer() {
         (document.getElementById("initialTimeHours").value == "" ? 0 : parseInt(document.getElementById("initialTimeHours").value)) * 3600 + 
         (document.getElementById("initialTimeMins").value == "" ? 0 : parseInt(document.getElementById("initialTimeMins").value)) * 60 + 
         (document.getElementById("initialTimeSecs").value == "" ? 0 : parseInt(document.getElementById("initialTimeSecs").value));
+    initialTime *= 10; // This puts the number in 10ths of a seconds.
 
     if (isNaN(initialTime)) {
         feedback = "Please input a valid starting time.";
@@ -205,18 +206,27 @@ function timeFormatConvert(time, removeUnnecessaryPadding) {
         
         } else { // If removeUnnecessaryPadding is true
 
-            if ((time / 3600) | 0 >  0) { // If there be hours
-                return (
-                    ((time / 3600) | 0).toString() + ":" +
-                    (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") + ":" +
-                    (time - ((time / 60) | 0) * 60).toString().padStart(2, "0")
-                );
+            let _time = time / 10;
+
+            if ((time / 36000) | 0 >  0) { // If there be hours
+
+                const _timeHours = (((_time / 3600) | 0) | 0).toString();
+                const _timeMins = ((((_time - ((_time / 3600) | 0) * 3600) / 60) | 0) | 0).toString().padStart(2, "0");
+                const _timeSecs = ((_time - ((_time / 60) | 0) * 60) | 0).toString().padStart(2, "0");
+                const _timeTenths = (time - ((time/10) | 0) * 10).toString();
+                console.log([_timeHours, _timeMins, _timeSecs, _timeTenths]);
+
+                return (_timeHours + ":" + _timeMins + ":" + _timeSecs + "." + _timeTenths);
+
             } else { // If there only be minutes
 
-                return (
-                    ((time / 60) | 0).toString() + ":" +
-                    (time - ((time / 60) | 0) * 60).toString().padStart(2, "0")
-                );
+                const _timeMins = ((_time / 60) | 0).toString();
+                const _timeSecs = ((_time - ((_time / 60) | 0) * 60) | 0).toString().padStart(2, "0");
+                const _timeTenths = (time - ((time/10) | 0) * 10).toString();
+                console.log([_timeMins, _timeSecs, _timeTenths]);
+
+
+                return (_timeMins + ":" + _timeSecs + "." + _timeTenths);
 
             }
 
@@ -286,7 +296,7 @@ function allTimeControl() {
         timer = window.setInterval(
         function () {
               
-            timeRemainingRight -= 1;
+                timeRemainingRight -= 1;
 
             // Byo-yomi rules
             if (timeControl == "byo-yomi") {
@@ -332,7 +342,7 @@ function allTimeControl() {
 
             justSwapped = false;
 
-        }, 1000);
+        }, 100);
 
     } else if (activeTimer == "rightClock" && gameActive) {
 
@@ -417,7 +427,7 @@ function allTimeControl() {
 
             justSwapped = false;
 
-        }, 1000);
+        }, 100);
 
     } 
 }
