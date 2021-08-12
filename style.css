@@ -97,3 +97,7 @@ div {
 #settingsButton:active {
     background-color: #333;
 }
+
+ul, li {
+    list-style-position: inside;
+}
