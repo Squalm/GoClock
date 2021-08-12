@@ -98,6 +98,16 @@ div {
     background-color: #333;
 }
 
+#cornerLinks {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    justify-content: right;
+    padding: 1vmin;
+    z-index: 1;
+}
+
 ul, li {
     list-style-position: inside;
 }
