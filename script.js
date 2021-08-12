@@ -19,6 +19,7 @@ function updateTimer() {
         (document.getElementById("initialTimeHours").value == "" ? 0 : parseInt(document.getElementById("initialTimeHours").value)) * 3600 + 
         (document.getElementById("initialTimeMins").value == "" ? 0 : parseInt(document.getElementById("initialTimeMins").value)) * 60 + 
         (document.getElementById("initialTimeSecs").value == "" ? 0 : parseInt(document.getElementById("initialTimeSecs").value));
+    initialTime *= 10; // This puts the number in 10ths of a second
 
     if (isNaN(initialTime)) {
         feedback = "Please input a valid starting time.";
@@ -26,6 +27,7 @@ function updateTimer() {
 
     // Get period bits
     periodTime = (document.getElementById("periodTime").value == "" ? 0 : parseInt(document.getElementById("periodTime").value));
+    periodTime *= 10; // This puts the numebr in 10th of a second
 
     if (isNaN(periodTime) && (timeControl == "byo-yomi" || timeControl == "fischer")) {
         feedback = "Please input a valid period length."
@@ -147,6 +149,9 @@ function startTimer() {
             timeRemainingLeft -= periodTime;
         }
 
+        const _timesetup = new Date();
+        timeOnLastClick = _timesetup.getTime();
+
         // Rest of timer stuff currently handled in document.onclick
     }
 
@@ -194,29 +199,36 @@ function timeFormatConvert(time, removeUnnecessaryPadding) {
 
     if (typeof time === typeof 20) {
 
+        let _time = (time / 10) | 0;
+
         if (!removeUnnecessaryPadding) { 
 
             // Thoroughly jank system that converts the time in seconds to hours:minutes:seconds
             return (
-                ((time / 3600) | 0).toString().padStart(2, "0") +":"+ 
-                (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") +":"+ 
-                (time - ((time/60) | 0) * 60).toString().padStart(2, 0)
+                ((_time / 3600) | 0).toString().padStart(2, "0") +":"+ 
+                (((_time - ((_time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") +":"+ 
+                (_time - ((_time/60) | 0) * 60).toString().padStart(2, 0) + "." +
+                (time - (_time * 10))
                 );
         
         } else { // If removeUnnecessaryPadding is true
 
-            if ((time / 3600) | 0 >  0) { // If there be hours
-                return (
-                    ((time / 3600) | 0).toString() + ":" +
-                    (((time - ((time / 3600) | 0) * 3600) / 60) | 0).toString().padStart(2, "0") + ":" +
-                    (time - ((time / 60) | 0) * 60).toString().padStart(2, "0")
-                );
+            if ((time / 36000) | 0 >  0) { // If there be hours
+
+                const _timeHours = (((_time / 3600) | 0) | 0).toString();
+                const _timeMins = ((((_time - ((_time / 3600) | 0) * 3600) / 60) | 0) | 0).toString().padStart(2, "0");
+                const _timeSecs = ((_time - ((_time / 60) | 0) * 60) | 0).toString().padStart(2, "0");
+                const _timeTenths = (time - ((time/10) | 0) * 10).toString();
+
+                return (_timeHours + ":" + _timeMins + ":" + _timeSecs + "." + _timeTenths);
+
             } else { // If there only be minutes
 
-                return (
-                    ((time / 60) | 0).toString() + ":" +
-                    (time - ((time / 60) | 0) * 60).toString().padStart(2, "0")
-                );
+                const _timeMins = ((_time / 60) | 0).toString();
+                const _timeSecs = ((_time - ((_time / 60) | 0) * 60) | 0).toString().padStart(2, "0");
+                const _timeTenths = (time - (_time * 10)).toString();
+
+                return (_timeMins + ":" + _timeSecs + "." + _timeTenths);
 
             }
 
@@ -239,6 +251,8 @@ var removeUnnecessaryPaddingUser = true;
 var moveCounterLeft = -1;
 var moveCounterRight = 0;
 var justSwapped = false;
+var timeOnLastClick = 0;
+var timeRemainingOnLastClick = 0;
 
 // On click swap the timer
 document.onclick = function() {allTimeControl();};
@@ -249,11 +263,16 @@ function allTimeControl() {
 
     justSwapped = true;
 
+    let _timesetup = new Date();
+    timeOnLastClick = _timesetup.getTime();
+
     if (activeTimer == "leftClock" && gameActive) {
 
         moveCounterLeft += 1;
 
         activeTimer = "rightClock";
+
+        timeRemainingOnLastClick = timeRemainingRight;
 
         // Apply time control specific rules
         if (timeControl == "fischer") {
@@ -286,7 +305,8 @@ function allTimeControl() {
         timer = window.setInterval(
         function () {
               
-            timeRemainingRight -= 1;
+            _timesetup = new Date();
+            timeRemainingRight = Math.round(timeRemainingOnLastClick - ((_timesetup.getTime() - timeOnLastClick) /100));
 
             // Byo-yomi rules
             if (timeControl == "byo-yomi") {
@@ -332,13 +352,15 @@ function allTimeControl() {
 
             justSwapped = false;
 
-        }, 1000);
+        }, 100);
 
     } else if (activeTimer == "rightClock" && gameActive) {
 
         moveCounterRight += 1;
 
         activeTimer = "leftClock";
+
+        timeRemainingOnLastClick = timeRemainingLeft;
 
         // Apply time control specific rules
         if (timeControl == "fischer") {
@@ -372,7 +394,8 @@ function allTimeControl() {
         timer = window.setInterval(
         function () {
               
-            timeRemainingLeft -= 1;
+            _timesetup = new Date();
+            timeRemainingLeft = Math.round(timeRemainingOnLastClick - ((_timesetup.getTime() - timeOnLastClick) /100));
 
             // Byo-yomi rules
             if (timeControl == "byo-yomi") {
@@ -417,7 +440,7 @@ function allTimeControl() {
 
             justSwapped = false;
 
-        }, 1000);
+        }, 100);
 
     } 
 }
