@@ -149,6 +149,9 @@ function startTimer() {
             timeRemainingLeft -= periodTime;
         }
 
+        const _timesetup = new Date();
+        timeOnLastClick = _timesetup.getTime();
+
         // Rest of timer stuff currently handled in document.onclick
     }
 
@@ -248,6 +251,8 @@ var removeUnnecessaryPaddingUser = true;
 var moveCounterLeft = -1;
 var moveCounterRight = 0;
 var justSwapped = false;
+var timeOnLastClick = 0;
+var timeRemainingOnLastClick = 0;
 
 // On click swap the timer
 document.onclick = function() {allTimeControl();};
@@ -258,11 +263,16 @@ function allTimeControl() {
 
     justSwapped = true;
 
+    let _timesetup = new Date();
+    timeOnLastClick = _timesetup.getTime();
+
     if (activeTimer == "leftClock" && gameActive) {
 
         moveCounterLeft += 1;
 
         activeTimer = "rightClock";
+
+        timeRemainingOnLastClick = timeRemainingRight;
 
         // Apply time control specific rules
         if (timeControl == "fischer") {
@@ -295,7 +305,8 @@ function allTimeControl() {
         timer = window.setInterval(
         function () {
               
-                timeRemainingRight -= 1;
+            _timesetup = new Date();
+            timeRemainingRight = Math.round(timeRemainingOnLastClick - ((_timesetup.getTime() - timeOnLastClick) /100));
 
             // Byo-yomi rules
             if (timeControl == "byo-yomi") {
@@ -349,6 +360,8 @@ function allTimeControl() {
 
         activeTimer = "leftClock";
 
+        timeRemainingOnLastClick = timeRemainingLeft;
+
         // Apply time control specific rules
         if (timeControl == "fischer") {
             timeRemainingRight += periodTime;
@@ -381,7 +394,8 @@ function allTimeControl() {
         timer = window.setInterval(
         function () {
               
-            timeRemainingLeft -= 1;
+            _timesetup = new Date();
+            timeRemainingLeft = Math.round(timeRemainingOnLastClick - ((_timesetup.getTime() - timeOnLastClick) /100));
 
             // Byo-yomi rules
             if (timeControl == "byo-yomi") {
