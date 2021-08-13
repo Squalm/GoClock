@@ -283,17 +283,17 @@ function allTimeControl() {
             timeRemainingRight = initialTime;
         }
         if (timeControl == "canadian") {
-            if (moveCounterLeft >= periodNumber) { // When using canadian time, periodNumber is the number of moves to get more time
+            if (moveCounterLeft >= periodNumber && inPeriodLeft) { // When using canadian time, periodNumber is the number of moves to get more time
                 moveCounterLeft = 0;
                 timeRemainingLeft = periodTime;
             }
         }
 
         if (timeControl == "byo-yomi") {
-            if (inPeriodRight && periodNumberRemainingRight >= 0) {
+            if (inPeriodRight && periodNumberRemainingRight > 0) {
                 timeRemainingRight = periodTime;
             }
-            if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
+            if (inPeriodLeft && periodNumberRemainingLeft > 0) {
                 timeRemainingLeft = periodTime;
             }
         }
@@ -323,9 +323,15 @@ function allTimeControl() {
                     // Reset time each move '>= 0' for SD. 
                     if (inPeriodRight && periodNumberRemainingRight >= 0) {
                         timeRemainingRight = periodTime;
+                        _timesetup = new Date();
+                        timeOnLastClick = _timesetup.getTime();
+                        timeRemainingOnLastClick = timeRemainingRight;
                     }
                     if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                         timeRemainingLeft = periodTime;
+                        _timesetup = new Date();
+                        timeOnLastClick = _timesetup.getTime();
+                        timeRemainingOnLastClick = timeRemainingLeft;
                     }
 
                 }
@@ -339,6 +345,10 @@ function allTimeControl() {
                     inPeriodRight = true;
                     timeRemainingRight = periodTime;
                     moveCounterRight = 0;
+
+                    _timesetup = new Date();
+                    timeOnLastClick = _timesetup.getTime();
+                    timeRemainingOnLastClick = timeRemainingRight;
                 }
             }
 
@@ -371,7 +381,7 @@ function allTimeControl() {
             timeRemainingRight = initialTime;
         }
         if (timeControl == "canadian") {
-            if (moveCounterRight >= periodNumber) { // When using canadian time, periodNumber is the number of moves to get more time
+            if (moveCounterRight >= periodNumber && inPeriodRight) { // When using canadian time, periodNumber is the number of moves to get more time
                 moveCounterRight = 0;
                 timeRemainingRight = periodTime;
             }
@@ -412,9 +422,15 @@ function allTimeControl() {
                     // Reset time each move '>= 0' for SD. 
                     if (inPeriodRight && periodNumberRemainingRight >= 0) {
                         timeRemainingRight = periodTime;
+                        _timesetup = new Date();
+                        timeOnLastClick = _timesetup.getTime();
+                        timeRemainingOnLastClick = timeRemainingRight;
                     }
                     if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                         timeRemainingLeft = periodTime;
+                        _timesetup = new Date();
+                        timeOnLastClick = _timesetup.getTime();
+                        timeRemainingOnLastClick = timeRemainingLeft;
                     }
                 }
 
@@ -427,6 +443,10 @@ function allTimeControl() {
                     inPeriodLeft = true;
                     timeRemainingLeft = periodTime;
                     moveCounterLeft = 0;
+
+                    _timesetup = new Date();
+                    timeOnLastClick = _timesetup.getTime();
+                    timeRemainingOnLastClick = timeRemainingLeft;
                 }
             }
 
