@@ -107,3 +107,7 @@ div {
     padding: 1vmin;
     z-index: 1;
 }
+
+ul, li {
+    list-style-position: inside;
+}
