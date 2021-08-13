@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width">
     <title>Go/Baduk/Weiqi Clock - Wiki</title>
 
-    <link href="../style.css" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
 
   </head>
@@ -14,25 +14,60 @@
   <body>
 
     <!-- Wiki! -->
+    <div id=wiki>
 
-    <h4>Contents</h4>
-    <ul>
-        <li>Getting Started</li>
-        <li>Time Control</li>
-        <ul>
-            <li>Byo-Yomi</li>
-            <li>Fischer</li>
-            <li>Canadian</li>
-            <li>Simple</li>
-            <li>Absolute</li>
-        </ul>
-    </ul>
+      <h4>Contents</h4>
+      <ul>
+          <li><a href="#GettingStarted">Getting Started</a></li>
+          <li><a href="#TimeControl">Time Control</a></li>
+          <ul>
+              <li><a href="#Byo-Yomi">Byo-Yomi</a></li>
+              <li><a href="#Fischer">Fischer</a></li>
+              <li><a href="#Canadian">Canadian</a></li>
+              <li><a href="#Simple">Simple</a></li>
+              <li><a href="#Absolute">Absolute</a></li>
+          </ul>
+      </ul>
+
+      <h1 id="#GettingStarted">Getting Started</h1>
+      <p>Time control is an important part of Go games, it's so complicated they could easily last for hours if we're not careful. In order to avoid unfairly ending the game mid-way through we can establish a method of time control to keep the game to a sensible length.<br><br>
+
+      The most common time control methods are byo-yomi and fischer. You're probably going to want to pick one of these if you're not sure. If you want to pick for yourself, go read the page about the different time control methods. Fischer is the simplest to understand and is quite generous, so I recommend you go with that for your first game.<br><br>
+        
+      You've got to pick an initial time, like 30mins (you can leave the hours and seconds fields blank, the site will assume they're 0s) and a bonus time per move, e.g. 30secs. You're good to go! Submit the timer, and then press begin the game. It should look something like this before you start the timer.</p>
+      <img src="../Assets/goclockfischerexample.png">
+
+      <h1 id="#TimeControl">Time Control</h1>
+      <p>Because Go is a much longer game than chess (usually), the usual timing methods for chess games do not work for Go. Chess uses mostly absolute, fischer, and a variant of Canadian time. In Go we have 5 main time control methods, byo-yomi, fischer, canadian, simple and absolute. If you're looking for a quick introduction to start timing your first game, head over to [getting started].</p>
+
+      <h2 id="Byo-Yomi">Byo-Yomi</h2>
+      <p>Byo-yomi has long been the standard of time control for go games. It consists of a buffer and then a number of periods. Each period refills unless you expend it entirely.<br><br>
+
+      The strategy with byo-yomi is generally simple. With shorter times, use the buffer period for the first ~50/100 moves (the hardest ones) and then play the midgame/endgame on the periods. This can lead to time-sujis if the periods are short and the endgame is complicated. On badukclock the buffer is the "starting time" then you can set the time for each period, usually 30/60 seconds and a number of periods, usually 3 or 5.</p>
+
+      <h2 id="Fischer">Fischer</h2>
+      <p>Fischer is the other main standard in go timing. Fischer time consists of a starting buffer time, and an additional bonus time is added each move (sometimes up to a limit, but that's not currently implemented on badukclock).<br><br>
+
+      There is not so much strategy with fischer time, it is quite a generous timekeeping system.</p>
+
+      <h2 id="Canadian">Canadian</h2>
+      <p>Canadian time is a newer timing method. It involves an initial buffer period like byo-yomi. Then a set amount of time is allowed per x moves. Badukclock shows the number of moves left till you get bonus time.<br><br>
+
+      Strategy is interesting with canadian time, since there is no reason not to burn all your time for each set of x moves, you can wait before playing a move that gives you more time, or, more commonly, you can play simple moves to get more time and then read a complicated sequence.</p>
+
+      <h2 id="Simple">Simple</h2>
+      <p>Simple time is, unsurprisingly, simple. The starting time is refilled for each move. It is rarely used.</p>
+
+      <h2 id="Absolute">Absolute</h2>
+      <p>Absolute time is very uncommon, unlike chess. In absolute time there is an initial time that never refills.</p>
+
+    </div>
 
     <div id="footerContent">
 
         <!--<footer>Hey there! I believe in an internet free of tracking (and ads, whereever possible). To keep this site running and support my other work please consider donating on <a href="">Patreon</a> or <a href="">Ko-fi</a>.</footer>-->
         <footer>
-            Hey there! I hope you got some use from this site. Please report bugs (or request features) <a href="https://github.com/Squalm/GoClock/issues" target="_blank" rel="noopener noreferrer">here</a>.
+            Hey there! I hope you got some use from this site. Please report bugs/feature requests/spelling mistakes <a href="https://github.com/Squalm/GoClock/issues" target="_blank" rel="noopener noreferrer">here</a>.
         </footer>
 
     </div>

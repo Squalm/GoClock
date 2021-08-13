@@ -1,0 +1,54 @@
+* {
+    font-family: 'Source Sans Pro', 'Courier New', Courier, monospace;
+    text-align: left;
+    color: #F0F0F0;
+    background-color: #0F0F0F;
+    font-size: 2.5vmin;
+}
+
+h1, h2 {
+    font-size: 8vmin;
+    color: #c97d60;
+    position: relative;
+    left: 0%;
+    right: 0%;
+    display: flex;
+    justify-content: center;
+}
+
+h2 {
+    font-size: 6vmin;
+}
+
+#wiki {
+    padding: 10vmin;
+}
+
+p {
+    text-align: justify;
+}
+
+footer {
+    text-align: center;
+    position: relative;
+    background-color: #202020;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1vmin;
+    font-size: 2vmin;
+}
+
+a {
+    color: #c97d60;
+    font-size: inherit;
+    background-color: inherit;
+}
+
+img {
+    border: 1vmin solid #F0F0F0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+}
