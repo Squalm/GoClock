@@ -1,4 +1,4 @@
-# A Go Clock
+# [A Go Clock](https://www.badukclock.com/)
 This site is a Go/Baduk/Weiqi clock for keeping track of over-the-board games.
 ## FAQ
 #### How do I request a feature?
