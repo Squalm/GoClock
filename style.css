@@ -111,3 +111,10 @@ div {
 ul, li {
     list-style-position: inside;
 }
+
+/*.github-button {
+    display: block;
+    position: relative;
+    text-align: right;
+    right: 0;
+}*/
