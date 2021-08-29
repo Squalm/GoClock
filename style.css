@@ -19,7 +19,7 @@ h1 {
 
 input, select, button {
     border: none;
-    border-radius: 10%;
+    border-radius: 0.5vmin;
     background: #333;
 }
 
