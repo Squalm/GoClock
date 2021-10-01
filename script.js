@@ -290,10 +290,10 @@ function allTimeControl() {
         }
 
         if (timeControl == "byo-yomi") {
-            if (inPeriodRight && periodNumberRemainingRight > 0) {
+            if (inPeriodRight && periodNumberRemainingRight >= 0) {
                 timeRemainingRight = periodTime;
             }
-            if (inPeriodLeft && periodNumberRemainingLeft > 0) {
+            if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                 timeRemainingLeft = periodTime;
             }
         }
@@ -311,7 +311,11 @@ function allTimeControl() {
             // Byo-yomi rules
             if (timeControl == "byo-yomi") {
 
-                if (timeRemainingRight <= 0) {
+                if ((periodNumberRemainingRight <= 0 || periodNumberRemainingRight <= 0) && timeRemainingRight <= 0) {
+                    stopTimer();
+                }
+
+                if (timeRemainingRight <= 0 && periodNumberRemainingRight > 0) {
 
                     // Remove periods once used
                     if (inPeriodRight) {
@@ -389,10 +393,10 @@ function allTimeControl() {
 
 
         if (timeControl == "byo-yomi") {
-            if (inPeriodRight && periodNumberRemainingRight > 0) {
+            if (inPeriodRight && periodNumberRemainingRight >= 0) {
                 timeRemainingRight = periodTime;
             }
-            if (inPeriodLeft && periodNumberRemainingLeft > 0) {
+            if (inPeriodLeft && periodNumberRemainingLeft >= 0) {
                 timeRemainingLeft = periodTime;
             }
         }
@@ -410,11 +414,15 @@ function allTimeControl() {
             // Byo-yomi rules
             if (timeControl == "byo-yomi") {
 
-                if (timeRemainingLeft <= 0) {
+                if ((periodNumberRemainingLeft <= 0 || periodNumberRemainingLeft <= 0) && timeRemainingLeft <= 0) {
+                    stopTimer();
+                }
+
+                if (timeRemainingLeft <= 0 && periodNumberRemainingLeft > 0) {
 
                     // Remove periods once used
                     if (inPeriodLeft) {
-                        periodNumberRemainingLeft -= 1;
+                        periodNumberRemainingLeft -= 1; 
                     }
 
                     inPeriodLeft = true;
