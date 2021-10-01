@@ -340,10 +340,7 @@ function allTimeControl() {
 
                 }
             
-            }
-
-            // Canadian rules
-            if (timeControl == "canadian") {
+            } else if (timeControl == "canadian") { // Canadian rules
 
                 if (timeRemainingRight <= 0 && inPeriodRight == false) {
                     inPeriodRight = true;
@@ -354,6 +351,10 @@ function allTimeControl() {
                     timeOnLastClick = _timesetup.getTime();
                     timeRemainingOnLastClick = timeRemainingRight;
                 }
+            } else {
+                
+                if (timeRemainingLeft <= 0) {  stopTimer();  }
+
             }
 
             timeDisplay();
@@ -442,10 +443,7 @@ function allTimeControl() {
                     }
                 }
 
-            }
-
-            // Canadian rules
-            if (timeControl == "canadian") {
+            } else if (timeControl == "canadian") { // Canadian rules
 
                 if (timeRemainingLeft <= 0 && inPeriodLeft == false) {
                     inPeriodLeft = true;
@@ -456,6 +454,10 @@ function allTimeControl() {
                     timeOnLastClick = _timesetup.getTime();
                     timeRemainingOnLastClick = timeRemainingLeft;
                 }
+            } else {
+
+                if (timeRemainingLeft <= 0) {  stopTimer();  }
+
             }
 
             timeDisplay();
